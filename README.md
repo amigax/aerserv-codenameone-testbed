@@ -1,1 +1,15 @@
 # aerserv-codenameone-testbed
+
+This is a sample app which demonstrates the use the AerServ (www.aerserv.com) Codename One Library (http://www.codenameone.com) which can be found here: https://github.com/amiga/aerserv-codenameone. 
+
+This app demonstrates using the library to show AerServ interstitial Ads (Fullscreen video Ads). It supports AerServ's core ones (Vpodia, Spot exchange, Millenia, Inmobi, Tapit) as well as additional ones I have added the jars for (Vungle, AdColony) into the library, you can add more as you please into the library.
+
+Feel free to fork and fix :-)
+
+Developed by Gareth Murfin (www.garethmurfin.co.uk) - Codename One and Android Freelance developer.
+
+Please note you can use PLC 10000741 to test if the lib is working, and also specifically to test Vungle you can use 1002823 on Android or 1002091 on iOS. You will need to set up an AerServ account and ad some ad sources to get your own PLC. Also note you need to see the plc after intialising.
+
+#Usage
+
+Just compile and run it on a device (Android or iOS [coming soon!]), and hit "load interstitial" it should show the demo advert from Nokia. Ypu can enter your plc in the textfield at the top to test it.
