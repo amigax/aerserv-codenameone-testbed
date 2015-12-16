@@ -12,4 +12,4 @@ Please note you can use PLC 10000741 to test if the lib is working, and also spe
 
 #Usage
 
-Just compile and run it on a device (Android or iOS [coming soon!]), and hit "load interstitial" it should show the demo advert from Nokia. Ypu can enter your plc in the textfield at the top to test it.
+Just compile and run it on a device (Android or iOS [coming soon!]), and hit "load interstitial" it should show the demo advert from Nokia. You can enter your plc in the textfield at the top to test it.
