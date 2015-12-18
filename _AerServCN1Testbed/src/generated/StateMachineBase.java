@@ -33,6 +33,7 @@ public abstract class StateMachineBase extends UIBuilder {
 
     public Container startApp(Resources res, String resPath, boolean loadTheme) {
         initVars();
+        UIBuilder.registerCustomComponent("Container", com.codename1.ui.Container.class);
         UIBuilder.registerCustomComponent("Form", com.codename1.ui.Form.class);
         UIBuilder.registerCustomComponent("Button", com.codename1.ui.Button.class);
         UIBuilder.registerCustomComponent("TextField", com.codename1.ui.TextField.class);
@@ -71,6 +72,7 @@ public abstract class StateMachineBase extends UIBuilder {
 
     public Container createWidget(Resources res, String resPath, boolean loadTheme) {
         initVars();
+        UIBuilder.registerCustomComponent("Container", com.codename1.ui.Container.class);
         UIBuilder.registerCustomComponent("Form", com.codename1.ui.Form.class);
         UIBuilder.registerCustomComponent("Button", com.codename1.ui.Button.class);
         UIBuilder.registerCustomComponent("TextField", com.codename1.ui.TextField.class);
@@ -136,6 +138,18 @@ public abstract class StateMachineBase extends UIBuilder {
         return cmp;
     }
 
+    public com.codename1.ui.Container findADTOME(Component root) {
+        return (com.codename1.ui.Container)findByName("ADTOME", root);
+    }
+
+    public com.codename1.ui.Container findADTOME() {
+        com.codename1.ui.Container cmp = (com.codename1.ui.Container)findByName("ADTOME", Display.getInstance().getCurrent());
+        if(cmp == null && aboutToShowThisContainer != null) {
+            cmp = (com.codename1.ui.Container)findByName("ADTOME", aboutToShowThisContainer);
+        }
+        return cmp;
+    }
+
     public com.codename1.ui.TextField findTfPlc(Component root) {
         return (com.codename1.ui.TextField)findByName("tfPlc", root);
     }
@@ -168,6 +182,18 @@ public abstract class StateMachineBase extends UIBuilder {
         com.codename1.ui.Button cmp = (com.codename1.ui.Button)findByName("btPreloadInterstitial", Display.getInstance().getCurrent());
         if(cmp == null && aboutToShowThisContainer != null) {
             cmp = (com.codename1.ui.Button)findByName("btPreloadInterstitial", aboutToShowThisContainer);
+        }
+        return cmp;
+    }
+
+    public com.codename1.ui.Button findBtSendLog(Component root) {
+        return (com.codename1.ui.Button)findByName("btSendLog", root);
+    }
+
+    public com.codename1.ui.Button findBtSendLog() {
+        com.codename1.ui.Button cmp = (com.codename1.ui.Button)findByName("btSendLog", Display.getInstance().getCurrent());
+        if(cmp == null && aboutToShowThisContainer != null) {
+            cmp = (com.codename1.ui.Button)findByName("btSendLog", aboutToShowThisContainer);
         }
         return cmp;
     }
@@ -314,6 +340,10 @@ public abstract class StateMachineBase extends UIBuilder {
                 onMain_BtShowInterstitialAction(c, event);
                 return;
             }
+            if("btSendLog".equals(c.getName())) {
+                onMain_BtSendLogAction(c, event);
+                return;
+            }
         }
     }
 
@@ -327,6 +357,9 @@ public abstract class StateMachineBase extends UIBuilder {
       }
 
       protected void onMain_BtShowInterstitialAction(Component c, ActionEvent event) {
+      }
+
+      protected void onMain_BtSendLogAction(Component c, ActionEvent event) {
       }
 
 }

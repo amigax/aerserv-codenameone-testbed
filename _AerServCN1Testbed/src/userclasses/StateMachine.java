@@ -36,7 +36,11 @@ public class StateMachine extends StateMachineBase {
     public static final String TEST_PLC="1000741";
     public static final String yourPlc = TEST_PLC; //swap this with your own
     
-    
+    //simply so we can print out whats going on.
+    String initialisationText="";
+    String loadInterstitialText="";
+    String preloadInterstitialText="";
+    String showInterstitialText="";
     /**
      * this method should be used to initialize variables instead of
      * the constructor/class scope to avoid race conditions
@@ -44,17 +48,19 @@ public class StateMachine extends StateMachineBase {
     protected void initVars(Resources res) {
         _("//////////////////////////////////////////////////////////////");
         _("AerServ - Test bed application born///////////////////////////");
-        _("//////////////////////////////////////////////////////////////");       
-        initialise(); //always call this first to initialise the lib
+        _("//////////////////////////////////////////////////////////////");     
         
+       ///moved to postMain initialise(); //always call this first to initialise the lib
+        
+        /*
         //Verify the classes we need exist
         classInfo="============\n";
         isClass("com.aerserv.sdk.view.ASVastInterstitialActivity");
         isClass("com.vungle.publisher.AdConfig"); // if this works but FullScreenAdActivity doesnt its due to obfuscation which is why classes arent found. so we use a built hint to turn it off
         isClass("com.vungle.publisher.FullScreenAdActivity");
-        isClass("com.jirbo.adcolony.AdColonyFullscreen");
+        isClass("com.jirbo.adcolony.AdColonyFullscreen");*/
     }
-
+/*
     String classInfo="";
     //for verfiying the libs exist
     public boolean isClass(String className) {
@@ -71,7 +77,7 @@ public class StateMachine extends StateMachineBase {
         return false;
     }
 }
-
+*/
      //AERSERV LIBRARY RELATED STUFF//
     
     boolean initialised;
@@ -87,6 +93,7 @@ public class StateMachine extends StateMachineBase {
         if (runningOnSimulator())
         {
             _("AerServ lib does not work on simulator, bailing out of initialisation.");
+            initialisationText= "AerServ lib does not work on simulator, bailing out of initialisation.";
             return;
         }
         
@@ -94,8 +101,11 @@ public class StateMachine extends StateMachineBase {
         if (my!=null && my.isSupported())
         {
             _("OK");
+            initialisationText="Native Lib loaded OK\n";
             initialised=true;
-            my.onResume_();//ADD THESE TO THE ONSTOP AND START STUFF IN THE MYAPPLICATION FILE? AYE LATER
+            
+        //    my.onCreate();//OLNNLY FOR IOS ?
+       //REMOVED FOR NOW TO GET IOS TO COMPILE!! since it removed _     my.onResume_();//ADD THESE TO THE ONSTOP AND START STUFF IN THE MYAPPLICATION FILE? AYE LATER
         }
         else
         {
@@ -103,6 +113,7 @@ public class StateMachine extends StateMachineBase {
             if (my==null)
             {
                 _("Failed to create native class!");
+                initialisationText="Native Lib not loaded BAD\n";
             }
             if (!my.isSupported())
             {
@@ -116,11 +127,16 @@ public class StateMachine extends StateMachineBase {
     @Override
     protected void onMain_BtLoadInterstitialAction(Component c, ActionEvent event) {
         _("onMain_BtLoadInterstitialAction");    
+        
+         Form f = c.getComponentForm();
+         
         if (my!=null && my.isSupported())
         {
             _("Loading interstitial");
             my.setPlc(tfPlc.getText()); // you must set your plc before you try to show an ad
             my.loadInterstitial();
+            
+            loadInterstitialText = "Loading interstitial with plc "+my.getPlc();
         }
         else
         {
@@ -128,29 +144,87 @@ public class StateMachine extends StateMachineBase {
             if (my==null)
             {
                 _("WARNING. Failed to create native class!");
+                loadInterstitialText = "Failed to create native class!";
             }
-            if (!my.isSupported())
+            else if (!my.isSupported())
             {
                 _("WARNING. This device is not supported by this library, feel free to implement it yourself!");
+                loadInterstitialText = "Platform not supported!";
             }
         }
-    
+        f.add(new SpanLabel("load:\n"+loadInterstitialText));
+         f.invalidate();
+         f.repaint();
     }
 
     @Override
     protected void onMain_BtPreloadInterstitialAction(Component c, ActionEvent event) {
         _("onMain_BtPreloadInterstitialAction");
-        _("Ore-loading interstitial");
-        my.setPlc(tfPlc.getText()); // you must set your plc before you try to show an ad
-        my.preloadInterstitial();
+        _("Pre-loading interstitial");
+        
+        Form f = c.getComponentForm();
+        
+        preloadInterstitialText = "Attempting to preload with plc "+tfPlc.getText();
+        //Container ADTOME = (Container) findByName("ADTOME",c.getComponentForm());
+        f.add(new SpanLabel(preloadInterstitialText));
+        
+         
+        if (my==null)
+        {
+            
+            preloadInterstitialText = "native class is still null!";
+            _(""+preloadInterstitialText);
+            f.add(new SpanLabel(preloadInterstitialText));
+          //  ADTOME.invalidate();
+        }
+        else
+        {
+            preloadInterstitialText = "...";
+            _(""+preloadInterstitialText);
+            f.add(new SpanLabel(preloadInterstitialText));
+          //  ADTOME.invalidate();
+        }
+         
+        if (my!=null)
+        {
+              _("...");
+              my.setPlc(tfPlc.getText()); // you must set your plc before you try to show an ad
+              my.preloadInterstitial();
+              preloadInterstitialText = "Preloaded";
+              f.add(new SpanLabel("preload:\n"+preloadInterstitialText));
+            //  ADTOME.invalidate();
+        }
+        else
+        {
+            _("my still null");
+        }
+      f.invalidate();
+      f.repaint();
+        //c.getComponentForm().invalidate();
+      
     }
 
     @Override
     protected void onMain_BtShowInterstitialAction(Component c, ActionEvent event) {
         _("onMain_BtShowInterstitialAction");
         _("Showing interstitial");
-        my.setPlc(tfPlc.getText()); // you must set your plc before you try to show an ad
-        my.showInterstitial();
+        
+        Form f = c.getComponentForm();
+        
+        if (my==null)
+        {
+            showInterstitialText = "BAD.";
+        }
+        else
+        {
+            my.setPlc(tfPlc.getText()); // you must set your plc before you try to show an ad
+            my.showInterstitial();
+            showInterstitialText = "OK.";
+        }
+        
+        f.add(new SpanLabel("show:\n"+showInterstitialText));
+        f.invalidate();
+        f.repaint();
     }
 
   //note i have not added banner functionality yet didnt know how to get at android srudd from layout.
@@ -200,6 +274,28 @@ public class StateMachine extends StateMachineBase {
         tfPlc.setText(yourPlc);
         
         //add any info about classes so we can see if it worked or not
-        f.add(new SpanLabel("Information about classes:\n"+classInfo));
+      
+        initialise();
+          f.add(new SpanLabel("INFO"));
+        f.add(new SpanLabel("init:\n"+initialisationText));
+        if (my==null)
+        {
+            _("my is still null wont do anyhting");
+        }
+        else
+        {
+            _("calling onCreate.........");
+             my.onCreate();//TO KICK OFF IOS ? for viewDidAppear to get called
+        }
+          
+        
+    }
+
+    @Override
+    protected void onMain_BtSendLogAction(Component c, ActionEvent event) {
+
+        _("onMain_BtSendLogAction SEND LOG");
+        Log.sendLog();
+    
     }
 }

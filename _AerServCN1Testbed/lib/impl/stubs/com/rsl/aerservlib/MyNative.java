@@ -9,7 +9,7 @@ public interface MyNative extends com.codename1.system.NativeInterface {
 
 	public void onCreate();
 
-	public void onResume_();
+	public void onResume();
 
 	public void onPause();
 
