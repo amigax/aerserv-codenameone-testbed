@@ -22,6 +22,7 @@ import com.codename1.ui.events.ActionEvent;
 import com.codename1.ui.events.ActionListener;
 import com.codename1.ui.plaf.UIManager;
 import com.codename1.ui.util.Resources;
+import com.codename1.ui.util.UITimer;
 import java.io.IOException;
 
 public class StateMachine extends StateMachineBase {
@@ -90,12 +91,12 @@ public class StateMachine extends StateMachineBase {
             return;
         }
         
-        if (runningOnSimulator())
+        /*if (runningOnSimulator())
         {
             _("AerServ lib does not work on simulator, bailing out of initialisation.");
             initialisationText= "AerServ lib does not work on simulator, bailing out of initialisation.";
             return;
-        }
+        }*/
         
         my = (MyNative) NativeLookup.create(MyNative.class);
         if (my!=null && my.isSupported())
@@ -284,8 +285,18 @@ public class StateMachine extends StateMachineBase {
         }
         else
         {
-            _("calling onCreate.........");
-             my.onCreate();//TO KICK OFF IOS ? for viewDidAppear to get called
+            _("App side is done, the native side should call onCreate for us.");
+            _("calling onCreate.........after a wait");
+            //WAIT? 
+             new UITimer(new Runnable() {
+                        public void run() 
+                        {   
+                              //RFR//_("logUserIn//////////...");
+                             my.onCreate();//TO KICK OFF IOS ? for viewDidAppear to get called
+
+                        }
+                    }).schedule(1000, false, f);
+            
         }
           
         

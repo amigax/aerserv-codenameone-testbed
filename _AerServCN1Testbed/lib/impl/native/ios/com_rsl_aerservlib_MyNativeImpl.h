@@ -1,11 +1,10 @@
+#import "CodenameOne_GLViewController.h"
+#import "AerServSDK.h"
 #import <Foundation/Foundation.h>
-#import <UIKit/UIKit.h>
 
+@interface com_rsl_aerservlib_MyNativeImpl : NSObject {
 
-
-
-@interface com_rsl_aerservlib_MyNativeImpl : UIViewController //{
-//}
+}
 
 -(void)setProduction;
 -(void)onCreate;
@@ -23,4 +22,6 @@
 -(void)setStaging;
 -(void)preloadInterstitial;
 -(BOOL)isSupported;
+
 @end
+

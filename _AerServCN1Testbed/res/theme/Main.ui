@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<component type="Form" name="Main" cloudDestinationProperty="Main" layout="BoxLayout" boxLayoutAxis="Y" title="AerServ Test App 0.1.9" >
+<component type="Form" name="Main" cloudDestinationProperty="Main" layout="BoxLayout" boxLayoutAxis="Y" title="AerServ Test App 0.9.9" >
   <component type="SpanLabel" name="SpanLabel" cloudDestinationProperty="SpanLabel" >
     <custom name="text" type="java.lang.String" value="This app demonstrates the AerServ CN1 lib working, enter your PLC below, the current one is the test one from AerServ." />
   </component>
